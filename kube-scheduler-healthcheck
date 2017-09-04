@@ -14,7 +14,7 @@ spec:
     image: ${TEST_POD_IMAGE}
 endOfPodDef
 
-kubectl delete pod scheduler-pod-healthcheck -n $TEST_POD_NAMESPACE || true
+kubectl delete pod scheduler-pod-healthcheck -n $TEST_POD_NAMESPACE --request-timeout=30s || true
 kubectl create -f /tmp/pod.yaml -n $TEST_POD_NAMESPACE
-until $(kubectl get pod scheduler-pod-healthcheck -n $TEST_POD_NAMESPACE -o jsonpath={.status.phase}) != 'Pending'; do sleep 1; done
-kubectl delete pod scheduler-pod-healthcheck -n $TEST_POD_NAMESPACE
+until $(kubectl get pod scheduler-pod-healthcheck -n $TEST_POD_NAMESPACE --request-timeout=30s -o jsonpath={.status.phase}) != 'Pending'; do sleep 1; done
+kubectl delete pod scheduler-pod-healthcheck -n $TEST_POD_NAMESPACE --request-timeout=30s
