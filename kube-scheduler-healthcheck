@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+TEST_POD_NAMESPACE="${TEST_POD_NAMESPACE:-kube-system}"
+TEST_POD_IMAGE="${TEST_POD_IMAGE:-gcr.io/google_containers/pause:3.0}"
+
+cat > /tmp/pod.yaml <<endOfPodDef
+apiVersion: v1
+kind: Pod
+metadata:
+  name: scheduler-pod-healthcheck
+spec:
+  containers:
+  - name: pause
+    image: ${TEST_POD_IMAGE}
+endOfPodDef
+
+alias kubectl="kubectl --namespace \$TEST_POD_NAMESPACE --request-timeout=30s"
+ 
+kubectl delete pod scheduler-pod-healthcheck || true
+kubectl create -f /tmp/pod.yaml
+until [ "$(kubectl get pod scheduler-pod-healthcheck -o jsonpath={.status.phase})" != "Pending" ]; do sleep 1; done
+kubectl delete pod scheduler-pod-healthcheck
