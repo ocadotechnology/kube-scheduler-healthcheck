@@ -8,4 +8,4 @@ RUN apk add --no-cache curl && \
 
 COPY kube-scheduler-healthcheck /usr/local/bin/
 
-CMD ["-port=8080", "-period=60s", "-latency=120s", "-cmd=/usr/local/bin/kube-scheduler-healthcheck" ]
+CMD ["-port=8090", "-period=60s", "-latency=120s", "-cmd=/usr/local/bin/kube-scheduler-healthcheck" ]
