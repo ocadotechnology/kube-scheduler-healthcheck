@@ -2,8 +2,8 @@
 set -eu
 TEST_POD_NAMESPACE="${TEST_POD_NAMESPACE:-kube-system}"
 TEST_POD_IMAGE="${TEST_POD_IMAGE:-gcr.io/google_containers/pause:3.0}"
-TEST_POD_NAME_POSTFIX="${TEST_POD_NAME_POSTFIX-''}"
-TEST_POD_NAME="scheduler-pod-healthcheck-${TEST_POD_NAME_POSTFIX}"
+TEST_POD_NAME_POSTFIX="${TEST_POD_NAME_POSTFIX-'pod'}"
+TEST_POD_NAME="scheduler-healthcheck-${TEST_POD_NAME_POSTFIX}"
 
 cat > /tmp/pod.yaml <<endOfPodDef
 apiVersion: v1
