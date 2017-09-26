@@ -1,5 +1,6 @@
-# kube-scheduler-healthcheck
+# kube-scheduler-healthcheck [![docker-build status](https://img.shields.io/docker/build/ocadotechnology/kube-scheduler-healthcheck.svg)](https://hub.docker.com/r/ocadotechnology/kube-scheduler-healthcheck/builds/)
 A docker container intended to be a healthcheck for the kubernetes scheduler. All the container will do is create a pod, wait for it to be scheduled (i.e leave `Pending` state), then delete the pod.
+`kube-scheduler-healthcheck` uses [exec healthz server](https://github.com/kubernetes/contrib/tree/master/exec-healthz) as a base container 
 
 # Config
 The following environment variables can be set:
