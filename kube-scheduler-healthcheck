@@ -3,7 +3,7 @@
 set -eu
 
 TEST_POD_NAMESPACE="${TEST_POD_NAMESPACE:-kube-system}"
-TEST_POD_IMAGE="${TEST_POD_IMAGE:-gcr.io/google_containers/pause:3.0}"
+TEST_POD_IMAGE="${TEST_POD_IMAGE:-gcr.io/google_containers/pause:3.1}"
 TEST_POD_NAME_POSTFIX="${TEST_POD_NAME_POSTFIX-'pod'}"
 TEST_POD_NAME="scheduler-healthcheck-${TEST_POD_NAME_POSTFIX}"
 
@@ -38,7 +38,7 @@ function create-test-pod {
 }
 function get-test-pod {
   if kubectl get pod ${TEST_POD_NAME} "$@" 2>/dev/null; then
-    echo "found test pod"
+    >&2 echo "found test pod"
   fi
 }
 function delete-test-pod {
