@@ -32,6 +32,16 @@ metadata:
     name: ${mypodname}
     uid: ${mypoduid}
 spec:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - scheduler-healthcheck-test-pod
+        topologyKey: failure-domain.beta.kubernetes.io/zone
   containers:
   - name: pause
     image: ${TEST_POD_IMAGE}
