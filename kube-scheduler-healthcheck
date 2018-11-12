@@ -5,7 +5,7 @@ set -eu
 TEST_POD_NAMESPACE="${TEST_POD_NAMESPACE:-kube-system}"
 TEST_POD_IMAGE="${TEST_POD_IMAGE:-gcr.io/google_containers/pause:3.1}"
 TEST_POD_NAME_POSTFIX="${TEST_POD_NAME_POSTFIX-'pod'}"
-TEST_POD_NAME="scheduler-healthcheck-${TEST_POD_NAME_POSTFIX}"
+TEST_POD_NAME="scheduler-healthcheck-${TEST_POD_NAME_POSTFIX}-$(date +%s)"
 
 IMAGE_PULL_SECRET=""
 if [[ ! -z "${TEST_POD_IMAGE_PULL_SECRET}" ]]; then
@@ -25,6 +25,7 @@ metadata:
   name: ${TEST_POD_NAME}
   labels:
     app: scheduler-healthcheck-test-pod
+    postfix: ${TEST_POD_NAME_POSTFIX}
   ownerReferences:
   - apiVersion: v1
     controller: true
@@ -58,7 +59,7 @@ function get-test-pod {
   fi
 }
 function delete-test-pod {
-  ${kubectl_timeout} delete pod ${TEST_POD_NAME} --grace-period=0 "$@" 2>/dev/null
+  ${kubectl_timeout} delete pod -l postfix=${TEST_POD_NAME_POSTFIX} --grace-period=0 "$@" 2>/dev/null
 }
 
 echo "clearing old state"
