@@ -25,6 +25,7 @@ metadata:
   name: ${TEST_POD_NAME}
   labels:
     app: scheduler-healthcheck-test-pod
+    postfix: ${TEST_POD_NAME_POSTFIX}
   ownerReferences:
   - apiVersion: v1
     controller: true
@@ -58,7 +59,7 @@ function get-test-pod {
   fi
 }
 function delete-test-pod {
-  ${kubectl_timeout} delete pod ${TEST_POD_NAME} --grace-period=0 "$@" 2>/dev/null
+  ${kubectl_timeout} delete pod -l postfix=${TEST_POD_NAME_POSTFIX} --grace-period=0 "$@" 2>/dev/null
 }
 
 echo "clearing old state"
