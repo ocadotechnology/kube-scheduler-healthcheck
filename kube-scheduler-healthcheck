@@ -12,10 +12,8 @@ if [[ ! -z "${TEST_POD_IMAGE_PULL_SECRET}" ]]; then
   IMAGE_PULL_SECRET="{\"name\": \"${TEST_POD_IMAGE_PULL_SECRET}\"}"
 fi
 
-kubectl_timeout="timeout -t 30 kubectl --namespace ${TEST_POD_NAMESPACE}"
-
 echo "gathering controller pod details"
-${kubectl_timeout} get pods --field-selector="status.podIP==$(hostname -i)" -o json > /tmp/me.json
+kubectl get pods --field-selector="status.podIP==$(hostname -i)" -o json > /tmp/me.json
 mypodname=$(jq '.items[0].metadata.name' /tmp/me.json)
 mypoduid=$(jq '.items[0].metadata.uid' /tmp/me.json)
 
@@ -51,6 +49,7 @@ spec:
   imagePullSecrets: [${IMAGE_PULL_SECRET}]
 endOfPodDef
 
+kubectl_timeout="timeout -t 30 kubectl --namespace ${TEST_POD_NAMESPACE}"
 function create-test-pod {
   ${kubectl_timeout} create -f /tmp/pod.yaml
 }
